@@ -45,3 +45,19 @@ IF @countSpecific <> 1
 
 IF @testMark <> 'O'
 	PRINT '!!! Mark should be O!'
+
+-- Exec with invalid state
+EXEC upStep 2, 3, 'O'
+
+SELECT @countAll = COUNT(*) FROM Board
+SELECT @countSpecific = COUNT(*) FROM Board WHERE X = 2 AND Y = 3
+SELECT @testMark = Mark FROM Board WHERE X = 2 AND Y = 3
+
+IF @countAll <> 1
+	PRINT '!!! There should be only one row!'
+
+IF @countSpecific <> 1
+	PRINT '!!! There should be only one hit!'
+
+IF @testMark <> 'O'
+	PRINT '!!! Mark should be O!'
