@@ -73,3 +73,19 @@ IF @countSpecific <> 1
 
 IF @testMark <> 'O'
 	PRINT '!!! Mark should be O!'
+
+--- *** ---
+TRUNCATE TABLE Board
+EXEC upStep 1, 1, 'O'
+EXEC upStep 1, 2, 'O'
+EXEC upStep 1, 3, 'O'
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'upCheckWinning') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE upCheckWinning
+GO
+
+CREATE PROCEDURE upCheckWinning
+AS
+BEGIN
+	RETURN 1
+END
