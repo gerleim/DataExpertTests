@@ -6,7 +6,7 @@ WHERE p.BusinessEntityID NOT IN (
 	WHERE PersonID IS NOT NULL)
 ORDER BY p.BusinessEntityID DESC
 
-
+ 
 
 SELECT PersonID
 FROM Sales.Customer
