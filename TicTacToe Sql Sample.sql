@@ -193,6 +193,8 @@ DECLARE @YMax int = 3
 SELECT @XMax = IIF(MAX(X) > @XMax, MAX(X), @XMax) FROM Board
 SELECT @YMax = IIF(MAX(Y) > @YMax, MAX(X), @YMax) FROM Board
 
+
+
 SELECT [1], [2], [3] FROM (
 	SELECT XAxis.I AS X, YAxis.I AS Y, COALESCE(b.Mark, ' ') Mark
 	FROM dbo.fnSequence(@XMin, @XMax) AS XAxis
