@@ -21,9 +21,21 @@ CREATE PROCEDURE upStep
  @Mark char(1)
 AS
 BEGIN
-	SET NOCOUNT ON 
-	INSERT INTO Board (X ,Y ,Mark)
-		 VALUES (@X, @Y, @Mark)
+	SET NOCOUNT ON
+	DECLARE @tempMark char(1)
+	SELECT @tempMark = Mark FROM Board WHERE X = @X AND Y = @Y
+
+	IF @tempMark IS NOT NULL
+	BEGIN
+		DECLARE @Message varchar(100)
+		SET @Message = 'Already set, value: ' + @tempMark
+		RAISERROR (@Message, 16, 1)
+	END
+	ELSE
+	BEGIN
+		INSERT INTO Board (X ,Y ,Mark)
+		VALUES (@X, @Y, @Mark)
+	END
 END
 GO
 
