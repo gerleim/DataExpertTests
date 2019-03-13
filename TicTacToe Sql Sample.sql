@@ -57,8 +57,13 @@ IF @countSpecific <> 1
 
 IF @testMark <> 'O'
 	PRINT '!!! Mark should be O!'
+GO
 
 -- Exec with invalid state
+DECLARE @countSpecific int
+DECLARE @countAll int
+DECLARE @testMark char(1)
+
 EXEC upStep 2, 3, 'O'
 
 SELECT @countAll = COUNT(*) FROM Board
@@ -75,12 +80,6 @@ IF @testMark <> 'O'
 	PRINT '!!! Mark should be O!'
 
 --- *** ---
-TRUNCATE TABLE Board
-EXEC upStep 1, 1, 'O'
-EXEC upStep 1, 2, 'O'
-EXEC upStep 1, 3, 'O'
-
-
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'upCheckWinning') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 	DROP PROCEDURE upCheckWinning
 GO
@@ -93,6 +92,7 @@ BEGIN
 	INNER JOIN Board b2 ON b2.Mark = b1.Mark AND b2.X = b1.X AND b2.Y = b1.Y + 1
 	INNER JOIN Board b3 ON b3.Mark = b2.Mark AND b3.X = b2.X AND b3.Y = b2.Y + 1
 END
+GO
 
 -- Testing winning and notr winning cases
 TRUNCATE TABLE Board
@@ -118,6 +118,10 @@ EXEC upCheckWinning @testMark OUTPUT
 
 IF @testMark IS NOT NULL
 	PRINT '!!! There shoud be no winner!'
+GO
+
+---
+DECLARE @testMark char(1)
 
 TRUNCATE TABLE Board
 EXEC upStep 1, 1, 'O'
@@ -128,7 +132,7 @@ SET @testMark = NULL
 
 EXEC upCheckWinning @testMark OUTPUT
 
-IF @testMark <> 'O'
+IF @testMark IS NULL OR @testMark <> 'O'
 	PRINT '!!! O should be the winner!'
 
 TRUNCATE TABLE Board
@@ -140,5 +144,5 @@ SET @testMark = NULL
 
 EXEC upCheckWinning @testMark OUTPUT
 
-IF @testMark <> 'O'
+IF @testMark IS NULL OR @testMark <> 'O'
 	PRINT '!!! O should be the winner!'
