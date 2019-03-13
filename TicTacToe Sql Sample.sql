@@ -21,6 +21,7 @@ CREATE PROCEDURE upStep
  @Mark char(1)
 AS
 BEGIN
+	SET NOCOUNT ON 
 	INSERT INTO Board (X ,Y ,Mark)
 		 VALUES (@X, @Y, @Mark)
 END
