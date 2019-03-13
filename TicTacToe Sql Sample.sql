@@ -91,6 +91,14 @@ BEGIN
 	SELECT @winningMark = b1.Mark FROM Board b1
 	INNER JOIN Board b2 ON b2.Mark = b1.Mark AND b2.X = b1.X AND b2.Y = b1.Y + 1
 	INNER JOIN Board b3 ON b3.Mark = b2.Mark AND b3.X = b2.X AND b3.Y = b2.Y + 1
+
+	SELECT @winningMark = b1.Mark FROM Board b1
+	INNER JOIN Board b2 ON b2.Mark = b1.Mark AND b2.X = b1.X + 1 AND b2.Y = b1.Y 
+	INNER JOIN Board b3 ON b3.Mark = b2.Mark AND b3.X = b2.X + 1 AND b3.Y = b2.Y
+
+	SELECT @winningMark = b1.Mark FROM Board b1
+	INNER JOIN Board b2 ON b2.Mark = b1.Mark AND b2.X = b1.X + 1 AND b2.Y = b1.Y + 1 
+	INNER JOIN Board b3 ON b3.Mark = b2.Mark AND b3.X = b2.X + 1 AND b3.Y = b2.Y + 1
 END
 GO
 
@@ -146,3 +154,48 @@ EXEC upCheckWinning @testMark OUTPUT
 
 IF @testMark IS NULL OR @testMark <> 'O'
 	PRINT '!!! O should be the winner!'
+GO
+
+----
+-- Visualize the board - add something to visualize
+-- A/ Use CTE to generate range
+-- B/ Use function
+-- C/ Use Query from a "fake" all table
+
+-- SELECT * FROM fnSequence(1,10)
+CREATE OR ALTER FUNCTION [dbo].[fnSequence] (
+ @start int,
+ @end int
+)
+RETURNS TABLE
+AS
+RETURN
+
+	WITH Seq AS
+	(SELECT @start AS I
+	    UNION ALL
+	    SELECT I + 1 AS I
+	    FROM Seq
+	    WHERE Seq.I < @end)
+		SELECT *
+		FROM Seq
+GO
+
+
+
+--- SELECT * FROM Board
+
+DECLARE @XMin int = 1
+DECLARE @YMin int = 1
+DECLARE @XMax int = 3
+DECLARE @YMax int = 3
+
+SELECT @XMax = IIF(MAX(X) > @XMax, MAX(X), @XMax) FROM Board
+SELECT @YMax = IIF(MAX(Y) > @YMax, MAX(X), @YMax) FROM Board
+
+SELECT [1], [2], [3] FROM (
+	SELECT XAxis.I AS X, YAxis.I AS Y, COALESCE(b.Mark, ' ') Mark
+	FROM dbo.fnSequence(@XMin, @XMax) AS XAxis
+	LEFT JOIN dbo.fnSequence(@YMin, @YMax) AS YAxis ON 1 = 1
+	LEFT JOIN Board b ON b.X = XAxis.I AND b.Y = YAxis.I) AS M
+PIVOT (MAX(Mark) FOR X IN ([1], [2], [3])) AS p
