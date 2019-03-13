@@ -18,6 +18,15 @@ FROM Sales.Customer
 WHERE PersonID IS NOT NULL
 ORDER BY PersonID ASC
 
+/*
+dfjkghladirukudsrigf odsuzfodugudgfzgdfkghdgjkhgdkjh yuxjzfg kudzgkucgufztgiduz tiuz tg
+
+
+ dfiufoiufhoiuhf
+ 
+ 
+ dj fgjdfgjd*/
+
 
 INSERT INTO Sales.Customer
 (PersonID, StoreID, TerritoryID, rowguid, ModifiedDate)
