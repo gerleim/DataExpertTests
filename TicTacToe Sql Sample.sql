@@ -37,7 +37,7 @@ SELECT @countAll = COUNT(*) FROM Board
 SELECT @countSpecific = COUNT(*) FROM Board WHERE X = 2 AND Y = 3
 SELECT @testMark = Mark FROM Board WHERE X = 2 AND Y = 3
 
-IF @countSpecific <> 1
+IF @countAll <> 1
 	PRINT '!!! There should be only one row!'
 
 IF @countSpecific <> 1
