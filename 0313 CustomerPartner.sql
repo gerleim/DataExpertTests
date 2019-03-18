@@ -6,7 +6,7 @@ WHERE p.BusinessEntityID NOT IN (
 	WHERE PersonID IS NOT NULL)
 ORDER BY p.BusinessEntityID DESC
 
- 
+
 
 SELECT PersonID
 FROM Sales.Customer
@@ -17,15 +17,6 @@ SELECT DISTINCT PersonID
 FROM Sales.Customer
 WHERE PersonID IS NOT NULL
 ORDER BY PersonID ASC
-
-/*
-dfjkghladirukudsrigf odsuzfodugudgfzgdfkghdgjkhgdkjh yuxjzfg kudzgkucgufztgiduz tiuz tg
-
-
- dfiufoiufhoiuhf
- 
- 
- dj fgjdfgjd*/
 
 
 INSERT INTO Sales.Customer
